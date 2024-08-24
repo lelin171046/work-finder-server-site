@@ -62,6 +62,16 @@ async function run() {
       const result = await bidsCollection.insertOne(data);
       res.send(result)
     })
+    //post a job
+
+    app.post('/add-job', async(req, res)=>{
+      const postJob = req.body;
+      // if(data.min_price > data)
+      
+      console.log(data);
+      const result = await jobCollection.insertOne(postJob);
+      res.send(result)
+    })
     
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
