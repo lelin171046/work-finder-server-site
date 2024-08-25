@@ -58,18 +58,36 @@ async function run() {
       const data = req.body;
       // if(data.min_price > data)
       
-      console.log(data);
+      console.log(data, 'bid data');
       const result = await bidsCollection.insertOne(data);
       res.send(result)
     })
+
+
     //post a job
 
     app.post('/add-job', async(req, res)=>{
       const postJob = req.body;
       // if(data.min_price > data)
       
-      console.log(data);
+      console.log(postJob, 'is here');
       const result = await jobCollection.insertOne(postJob);
+      res.send(result)
+    })
+
+    //my posted jobs list
+    app.get('/jobs/:email', async(req, res)=>{
+      const email = req.params.email;
+      const query = {'buyer.email': email};
+      const result = await jobCollection.find(query).toArray();
+      res.send(result)
+    })
+
+    //delete job post from db
+    app.delete('/jobs/:id', async(req, res)=>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await jobCollection.deleteOne(query)
       res.send(result)
     })
     
