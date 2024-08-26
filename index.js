@@ -90,6 +90,24 @@ async function run() {
       const result = await jobCollection.deleteOne(query)
       res.send(result)
     })
+
+    //Update jobs
+    app.put('/update/:id', async(req, res)=>{
+      const id = req.params.id;
+      console.log(id, 'update id');
+      const jobData = req.body;
+      console.log(jobData, 'upppppppppppp');
+      const query = {_id: new ObjectId(id)};
+      const options = {upsert : true}
+      const updateDoc = {
+        $set : {
+          ...jobData
+        }
+      }
+      const result = await jobCollection.updateOne(query, updateDoc, options);
+      res.send(result)
+
+    })
     
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
