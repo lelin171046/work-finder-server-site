@@ -15,7 +15,7 @@ const port = process.env.PORT || 8000;
  
 // }));
 const corsOption = {
-  Option :['http://localhost:5173', 'https://work-finder-server-site-3uwf5c7wx-moniruzzaman-lelins-projects.vercel.app'],
+  origin :['http://localhost:5173', 'https://work-finder-server-site-3uwf5c7wx-moniruzzaman-lelins-projects.vercel.app'],
   credentials: true,
   optionSuccessStatus:200,
 }
@@ -54,8 +54,13 @@ app.post('/jwt', async(req, res)=>{
   console.log(user);
   const token = jwt.sign(user, process.env.S_Key, {expiresIn: '365d'})
 
-  res.send({token})
+  res.cookie('token', token, {
+    httpOnly: true,
+    secure:process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === "production" ? "none" : 'strict'  }).send({ success : true})
 })
+///LogOut jwt
+app.post('/logout', (req,res))
     //job by id
     app.get('/job/:id', async(req, res)=>{
       const id = req.params.id;
